@@ -27,6 +27,16 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
+    public Long getCount() {
+        return proposalMapper.getCount();
+    }
+
+    @Override
+    public Long getCountByStatus(EstadoEnum estadoEnum) {
+        return proposalMapper.getCountByStatus(estadoEnum);
+    }
+
+    @Override
     public List<Proposal> getAll() {
         return proposalMapper.findAll();
     }
@@ -41,10 +51,15 @@ public class ProposalServiceImpl implements ProposalService {
          proposal.setFechaEnvio(new Date());
          proposal.setEstado(EstadoEnum.EN_PROGRESO);
          proposalMapper.insert(proposal);
-         proposal.getEpica().forEach(f -> f.setPropuesta_id(proposal.getPropuestaId()));
-         proposal.getHistoriaUsuarios().forEach(h-> h.setPropuesta_id(proposal.getPropuestaId()));
-         epicMapper.insertMultiple(proposal.getEpica());
-        userHistoryMapper.insertMultiple(proposal.getHistoriaUsuarios());
+         if(proposal.getEpica().size() > 0) {
+             proposal.getEpica().forEach(f -> f.setPropuesta_id(proposal.getPropuestaId()));
+             epicMapper.insertMultiple(proposal.getEpica());
+         }
+        if(proposal.getHistoriaUsuarios().size() > 0) {
+            proposal.getHistoriaUsuarios().forEach(h-> h.setPropuesta_id(proposal.getPropuestaId()));
+            userHistoryMapper.insertMultiple(proposal.getHistoriaUsuarios());
+        }
+
     }
 
     @Override

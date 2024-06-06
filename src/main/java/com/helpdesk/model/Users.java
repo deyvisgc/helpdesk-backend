@@ -1,5 +1,6 @@
 package com.helpdesk.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.helpdesk.Utils.RolEnum;
 import lombok.Builder;
@@ -25,5 +26,6 @@ public class Users {
     @NotNull(message = "Rol del solicitante es requerido.")
     @Enumerated(EnumType.STRING)
     private RolEnum rol;
+    @JsonIgnore
     private List<Requirement> requerimientos;
 }

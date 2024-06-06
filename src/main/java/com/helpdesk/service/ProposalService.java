@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface ProposalService {
     public Proposal getById(Long propuestaId);
+    public Long getCount();
+    public Long getCountByStatus(EstadoEnum estadoEnum);
     public List<Proposal> getAll();
     public List<Proposal> getByStatus(EstadoEnum estadoEnum);
     public void save(Proposal proposal) throws IOException;

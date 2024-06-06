@@ -26,6 +26,13 @@ public interface RequirementMapper {
     @Select("SELECT * FROM requirements WHERE solicitante_id = #{solicitanteId}")
     List<Requirement> findBySolicitanteId(Long solicitanteId);
 
+    @Select("SELECT count(*) FROM requirements")
+    Long countRequiriments();
+
+    @Select("SELECT count(*) FROM requirements where estado = #{estado}")
+    Long getCountByStatus(EstadoEnum estado);
+    @Select("SELECT * FROM requirements WHERE asignado_id = #{analystId}")
+    List<Requirement> findByAnaLystId(Long analystId);
     @Select("SELECT * FROM requirements")
     @Results({
             @Result(property = "requerimiento_id", column = "requerimiento_id"),
@@ -76,8 +83,8 @@ public interface RequirementMapper {
               @Param("p_descripcion") String p_descripcion,
               @Param("p_archivo_adjunto") String p_archivo_adjunto
     );
-    @Update("UPDATE requirements SET asignado_id = #{asignadoId} WHERE requerimiento_id = #{requirementId}")
-    void assignToAnalyst(@Param("asignadoId") Long asignadoId, @Param("requirementId") Long requirementId);
+    @Update("UPDATE requirements SET asignado_id = #{asignadoId}, estado = #{estado} WHERE requerimiento_id = #{requirementId}")
+    void assignToAnalyst(@Param("asignadoId") Long asignadoId, @Param("estado") EstadoEnum estado, @Param("requirementId") Long requirementId);
 
     @Delete("DELETE FROM requirements WHERE requerimiento_id = #{requerimientoId}")
     void deleteById(@Param("requerimientoId") Long requerimientoId);

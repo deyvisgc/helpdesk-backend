@@ -58,6 +58,10 @@ public interface ProposalMapper {
                     many = @Many(select = "com.helpdesk.mappers.UserHistoryMapper.getUserStoriesByProposalId"))
     })
     List<Proposal> findAll();
+    @Select("SELECT count(*) FROM proposals")
+    Long getCount();
+    @Select("SELECT count(*) FROM proposals where estado = #{estado}")
+    Long getCountByStatus(EstadoEnum estado);
 
     @Select("SELECT * FROM proposals where estado = #{estado}")
     @Results({

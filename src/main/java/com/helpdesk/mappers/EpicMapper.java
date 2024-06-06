@@ -9,9 +9,9 @@ import java.util.List;
 public interface EpicMapper {
     @Insert({
             "<script>",
-            "INSERT INTO epics (titulo, propuesta_id) VALUES ",
+            "INSERT INTO epics (titulo, descripcion, propuesta_id) VALUES ",
             "<foreach item='epic' collection='epicas' separator=','>",
-            "(#{epic.titulo}, #{epic.propuesta_id})",
+            "(#{epic.titulo},#{epic.descripcion} , #{epic.propuesta_id})",
             "</foreach>",
             "</script>"
     })
@@ -24,11 +24,6 @@ public interface EpicMapper {
             @Result(property = "epicId", column = "epica_id"),
             @Result(property = "nombre", column = "nombre_epic"),
             @Result(property = "descripcion", column = "descripcion")
-            /*
-            @Result(property = "proposal", column = "propuesta_id",
-                    one = @One(select = "com.helpdesk.mappers.ProposalMapper.findById"))
-
-             */
 
     })
     List<Epic> getEpicsByProposalId(Long proposalId);

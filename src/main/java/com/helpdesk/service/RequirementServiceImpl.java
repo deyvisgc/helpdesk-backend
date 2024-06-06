@@ -31,6 +31,21 @@ public class RequirementServiceImpl implements RequirementService {
     }
 
     @Override
+    public Long getCount() {
+        return  requirementMapper.countRequiriments();
+    }
+
+    @Override
+    public Long getCountByStatus(EstadoEnum estadoEnum) {
+        return requirementMapper.getCountByStatus(estadoEnum);
+    }
+
+    @Override
+    public List<Requirement> getByAnalystId(Long id) {
+        return requirementMapper.findByAnaLystId(id);
+    }
+
+    @Override
     public List<Requirement> getAll() {
         return requirementMapper.findAll();
     }
@@ -42,9 +57,7 @@ public class RequirementServiceImpl implements RequirementService {
 
     @Override
     public void assignRequirement(Long requirementId, Long asignadoId) {
-        System.err.println("requirementId: " + requirementId);
-        System.err.println("asignadoId: " + asignadoId);
-        requirementMapper.assignToAnalyst(asignadoId, requirementId);
+        requirementMapper.assignToAnalyst(asignadoId, EstadoEnum.ASIGNADO_ANALISTA, requirementId);
     }
 
     @Override
@@ -77,16 +90,22 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public void update(UsuarioRequerimientoDto requerimientoDto, MultipartFile file, Long idUser, Long idRequerimiento) throws IOException {
         // Crear el directorio si no existe
-        Files.createDirectories(Paths.get(uploadPath));
-        // Guardar el archivo en el servidor
-        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        Files.copy(file.getInputStream(), Paths.get(uploadPath).resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+        String fileDownloadUri = "";
+        if (file != null) {
+            Files.createDirectories(Paths.get(uploadPath));
+            // Guardar el archivo en el servidor
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Files.copy(file.getInputStream(), Paths.get(uploadPath).resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
 
-        // Obtener la URL del archivo guardado
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/download/")
-                .path(fileName)
-                .toUriString();
+            // Obtener la URL del archivo guardado
+             fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/download/")
+                    .path(fileName)
+                    .toUriString();
+        } else {
+            fileDownloadUri = requerimientoDto.getRequirement().getArchivo_adjunto();
+        }
+
 
         requirementMapper.update(
                 Math.toIntExact(idUser) ,

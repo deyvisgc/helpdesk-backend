@@ -21,8 +21,8 @@ public class Proposal {
     private Long analistaId;
     @NotBlank(message = "El texto de la propuesta es requerida")
     private String textoPropuesta;
-    @Min(value = 1, message = "La estimacion del tiempo debe ser mayor a 0")
-    private Integer estimacionTiempo;
+    @NotNull(message = "La estimacion del tiempono puede ser nulo")
+    private String estimacionTiempo;
     @Min(value = 1, message = "El numero de programadores debe ser mayor a 0")
     private Integer numeroProgramadores;
     private Date fechaEnvio;

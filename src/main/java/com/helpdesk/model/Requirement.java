@@ -13,6 +13,5 @@ public class Requirement {
     private String archivo_adjunto;
     private EstadoEnum estado;
     private Users asignado;
-    @JsonIgnore
     private Users solicitante;
 }

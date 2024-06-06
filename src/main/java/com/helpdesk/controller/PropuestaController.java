@@ -7,6 +7,7 @@ import com.helpdesk.exception.ErrorMessage;
 import com.helpdesk.exception.PropuestaException;
 import com.helpdesk.model.Proposal;
 import com.helpdesk.service.ProposalService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/proposal")
+@Slf4j
+@CrossOrigin("*")
 public class PropuestaController {
     @Autowired
     private ProposalService proposalService;

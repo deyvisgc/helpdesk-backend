@@ -8,6 +8,7 @@ import com.helpdesk.exception.ErrorMessage;
 import com.helpdesk.exception.UsuarioException;
 import com.helpdesk.model.Users;
 import com.helpdesk.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +23,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Slf4j
+@CrossOrigin("*")
 public class UsersController {
     @Autowired
     private UserService userService;
     @Autowired
     private static final ApiResponse response = ApiResponse.getInstance();
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Users>> getAll() {
         List<Users> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
